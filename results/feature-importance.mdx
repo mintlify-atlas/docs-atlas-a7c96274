@@ -1,0 +1,106 @@
+---
+title: 'Feature Importance'
+description: 'Analysis of feature coefficients and their impact on customer spending predictions'
+---
+
+## Feature Coefficients Breakdown
+
+The linear regression model provides coefficient values that indicate how much each feature contributes to the prediction of yearly customer spending.
+
+### Model Coefficients
+
+| Feature | Coefficient Value | Impact Level |
+|---------|------------------|-------------|
+| **Length of Membership** | ~61.30 | Very High |
+| **Time on App** | ~38.81 | Highest |
+| **Avg. Session Length** | ~25.83 | Moderate |
+| **Time on Website** | ~0.28 | Lowest |
+| **Intercept** | ~-1048.82 | Baseline |
+
+## Detailed Feature Analysis
+
+### 1. Length of Membership (Coefficient: ~61.30)
+
+**This is the strongest predictor of customer spending.**
+
+<Note>
+For every additional year a customer remains a member, the model predicts an increase of approximately **$61.30** in yearly spending, holding all other factors constant.
+</Note>
+
+**Business Insight**: Customer loyalty is extremely valuable. Long-term members spend significantly more than new members.
+
+### 2. Time on App (Coefficient: ~38.81)
+
+**The mobile app has the highest impact among engagement metrics.**
+
+<Note>
+For every additional minute spent on the mobile app, the model predicts an increase of approximately **$38.81** in yearly spending.
+</Note>
+
+**Business Insight**: Mobile app engagement directly correlates with increased revenue. Customers who spend more time on the app are much more likely to make purchases.
+
+### 3. Avg. Session Length (Coefficient: ~25.83)
+
+**Session quality matters for revenue.**
+
+<Note>
+For every additional minute in average session length, the model predicts an increase of approximately **$25.83** in yearly spending.
+</Note>
+
+**Business Insight**: Longer, more engaged sessions lead to higher spending. This suggests that customers who have meaningful interactions with in-store style advice sessions are more valuable.
+
+### 4. Time on Website (Coefficient: ~0.28)
+
+**The website has minimal impact on spending.**
+
+<Warning>
+For every additional minute spent on the website, the model predicts an increase of only **$0.28** in yearly spending. This is **138 times less impactful** than time spent on the mobile app (38.81 / 0.28 ≈ 138).
+</Warning>
+
+**Business Insight**: The website in its current state is not driving significant revenue compared to the mobile app.
+
+### 5. Intercept (~-1048.82)
+
+**The baseline value when all features are zero.**
+
+The negative intercept of approximately -$1048.82 represents the model's baseline. This is a theoretical value that has no practical business meaning, as customers would never have all features at zero.
+
+## What Drives Customer Spending?
+
+### Primary Drivers (High Impact)
+
+1. **Customer Loyalty** (Length of Membership: $61.30 per year)
+   - Retention strategies have massive ROI potential
+   - Long-term customer relationships are highly valuable
+
+2. **Mobile App Engagement** (Time on App: $38.81 per minute)
+   - Mobile platform is the strongest engagement driver
+   - App improvements directly translate to revenue
+
+### Secondary Drivers (Moderate Impact)
+
+3. **Session Quality** (Avg. Session Length: $25.83 per minute)
+   - In-store advice sessions add value
+   - Quality interactions matter for conversion
+
+### Minimal Impact
+
+4. **Website Engagement** (Time on Website: $0.28 per minute)
+   - Current website contributes minimally to spending
+   - Significant opportunity for improvement
+
+## Coefficient Interpretation Summary
+
+The coefficient values reveal a clear hierarchy of what drives customer spending:
+
+```
+Length of Membership (61.30) > Time on App (38.81) > Avg. Session Length (25.83) >> Time on Website (0.28)
+```
+
+<Note>
+These coefficients are based on standardized features and represent the independent contribution of each variable when all others are held constant. The actual business impact depends on how much each feature can realistically be improved.
+</Note>
+
+### Key Takeaway
+
+The **mobile app is 138 times more effective** than the website at driving customer spending. This dramatic difference, combined with the high value of long-term memberships, should guide strategic investment decisions.

@@ -1,0 +1,110 @@
+---
+title: 'Data Preparation'
+description: 'Loading, processing, and splitting the dataset for linear regression analysis'
+---
+
+## Data Loading
+
+The dataset is loaded using pandas' `read_csv` function from a local CSV file:
+
+```python
+import pandas as pd
+from ydata_profiling import ProfileReport
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Read the data into a DataFrame
+db_path = "data/"
+df = pd.read_csv(db_path+"ecommerce_customers.csv")
+```
+
+## Initial Data Exploration
+
+After loading, the dataset is examined to understand its structure:
+
+```python
+# Display first few rows
+df.head()
+```
+
+This reveals the 8 columns: Email, Address, Avatar, Avg. Session Length, Time on App, Time on Website, Length of Membership, and Yearly Amount Spent.
+
+```python
+# Generate descriptive statistics
+df.describe()
+```
+
+The `describe()` function provides statistical summaries for all numeric columns, confirming 500 complete records across all features.
+
+## Feature Selection
+
+For the linear regression model, we separate the dataset into independent variables (features) and the dependent variable (target).
+
+### Independent Variables (X)
+
+Four numeric features are selected as predictors:
+
+```python
+cols = ['Avg. Session Length', 'Time on App', 'Time on Website', 'Length of Membership']
+
+X = df[cols]
+```
+
+<Info>
+The non-numeric columns (Email, Address, Avatar) are excluded as they don't provide meaningful predictive value for regression analysis.
+</Info>
+
+### Target Variable (y)
+
+The dependent variable is the annual spending amount:
+
+```python
+y = df['Yearly Amount Spent']
+```
+
+## Train-Test Split
+
+The dataset is divided into training and testing sets using a **70-30 split ratio**:
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+```
+
+### Split Configuration
+
+<ParamField path="test_size" type="float" default="0.3">
+  30% of the data (150 customers) is reserved for testing
+</ParamField>
+
+<ParamField path="random_state" type="int" default="1">
+  Ensures reproducibility of the random split
+</ParamField>
+
+### Resulting Datasets
+
+- **Training Set:** 350 customers (70%)
+  - Used to train the linear regression model
+  - Model learns the relationship between features and yearly spending
+
+- **Testing Set:** 150 customers (30%)
+  - Used to evaluate model performance
+  - Provides unbiased assessment of prediction accuracy
+
+<Note>
+The 70-30 split is a common practice in machine learning that balances having enough data for training while maintaining a substantial test set for validation.
+</Note>
+
+## Data Preparation Summary
+
+The preparation pipeline follows these steps:
+
+1. Load CSV data into pandas DataFrame
+2. Explore dataset structure and statistics
+3. Select 4 numeric features as independent variables
+4. Define Yearly Amount Spent as the target variable
+5. Split data into 70% training and 30% testing sets
+
+This structured approach ensures the data is properly formatted for linear regression modeling while maintaining data integrity and reproducibility.

@@ -1,0 +1,84 @@
+---
+title: Linear Regression Model
+description: Understanding the linear regression approach for predicting yearly customer spending
+---
+
+## Overview
+
+Linear regression is a supervised machine learning algorithm used to model the relationship between a dependent variable and one or more independent variables. In this ecommerce analysis, we use linear regression to predict the **Yearly Amount Spent** by customers based on their engagement metrics.
+
+## Why Linear Regression?
+
+Linear regression was chosen for this problem for several key reasons:
+
+- **Interpretability**: The coefficients provide clear insights into how each feature impacts customer spending
+- **Continuous Target Variable**: Yearly spending is a continuous numerical value, making it ideal for regression
+- **Linear Relationships**: Initial data exploration indicated approximately linear relationships between features and the target
+- **Baseline Performance**: Linear regression serves as an excellent baseline model before exploring more complex algorithms
+- **Business Insights**: The model coefficients directly inform business decisions about resource allocation
+
+## Model Assumptions
+
+Linear regression operates under several key assumptions:
+
+1. **Linearity**: The relationship between independent and dependent variables is linear
+2. **Independence**: Observations are independent of each other
+3. **Homoscedasticity**: Constant variance of residuals across all levels of independent variables
+4. **Normality**: Residuals are normally distributed
+5. **No Multicollinearity**: Independent variables are not highly correlated with each other
+
+<Note>
+While these assumptions are important for optimal model performance, linear regression can still provide valuable insights even when some assumptions are partially violated.
+</Note>
+
+## Features Used
+
+The model uses four key features to predict yearly customer spending:
+
+| Feature | Description | Unit |
+|---------|-------------|------|
+| **Avg. Session Length** | Average duration of in-store style and clothing advice sessions | Minutes |
+| **Time on App** | Time spent on the mobile application | Minutes |
+| **Time on Website** | Time spent on the website | Minutes |
+| **Length of Membership** | How long the customer has been a member | Years |
+
+### Target Variable
+
+**Yearly Amount Spent**: The total amount spent by the customer annually (in dollars)
+
+## Mathematical Formulation
+
+The linear regression model predicts the target variable using the following equation:
+
+```
+Yearly Amount Spent = β₀ + β₁(Avg. Session Length) + β₂(Time on App) + β₃(Time on Website) + β₄(Length of Membership)
+```
+
+Where:
+- **β₀** (intercept): The baseline value when all features are zero
+- **β₁, β₂, β₃, β₄** (coefficients): The weight assigned to each feature, indicating its impact on the target variable
+
+### Interpretation
+
+Each coefficient represents the change in yearly spending (in dollars) for a one-unit increase in the corresponding feature, holding all other features constant.
+
+<Info>
+For example, if β₂ (Time on App coefficient) is 38.81, this means that for every additional minute spent on the mobile app, the model predicts an increase of approximately $38.81 in yearly spending.
+</Info>
+
+## Model Implementation
+
+The model is implemented using scikit-learn's `LinearRegression` class, which uses the Ordinary Least Squares (OLS) method to find the optimal coefficients that minimize the sum of squared residuals.
+
+```python
+from sklearn.linear_model import LinearRegression
+
+# Initialize the model
+lr_model = LinearRegression()
+```
+
+This implementation:
+- Automatically calculates optimal coefficients using matrix operations
+- Handles multiple features efficiently
+- Provides methods for fitting and prediction
+- Includes no regularization (pure OLS)

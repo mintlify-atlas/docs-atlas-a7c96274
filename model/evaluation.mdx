@@ -1,0 +1,216 @@
+---
+title: Model Evaluation
+description: Assessing the performance and interpreting results of the linear regression model
+---
+
+## Prediction Process
+
+Once the model is trained, we use it to make predictions on the test set that was held out during training.
+
+### Making Predictions
+
+```python
+# Make predictions on the test data
+y_pred = lr_model.predict(X_test)
+```
+
+The `predict()` method:
+- Takes the test features (X_test) as input
+- Applies the learned linear equation
+- Returns predicted values for Yearly Amount Spent
+- Produces 150 predictions (one for each test sample)
+
+### Example Predictions
+
+Here's a sample of the first 5 predictions:
+
+```python
+y_pred[:5]
+# Output: array([498.82, 519.53, 562.95, 478.91, 423.82])
+```
+
+These values represent the model's predicted yearly spending in dollars for the first five customers in the test set.
+
+## Evaluation Metrics
+
+We use two primary metrics to assess model performance: Mean Squared Error (MSE) and R-squared (R²).
+
+### Computing Metrics
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("Mean Squared Error:", mse)
+print("R-squared:", r2)
+```
+
+### Results
+
+Based on the model evaluation:
+
+```python
+# Output:
+Mean Squared Error: 80.90
+R-squared: 0.9885
+```
+
+## Understanding Mean Squared Error (MSE)
+
+**MSE: 80.90**
+
+Mean Squared Error measures the average squared difference between actual and predicted values.
+
+### Formula
+
+```
+MSE = (1/n) × Σ(actual - predicted)²
+```
+
+### Interpretation
+
+- **Lower is better**: MSE of 80.90 is relatively low
+- **Units**: MSE is in squared dollars (dollars²)
+- **Root MSE**: √80.90 ≈ $9.00, meaning predictions are off by about $9 on average
+- **Context**: Given that yearly spending ranges from $256 to $765, an RMSE of $9 represents excellent accuracy
+
+<Info>
+An MSE of 80.90 indicates that the model's predictions are very close to actual values, with an average error of approximately $9 per prediction.
+</Info>
+
+## Understanding R-squared (R²)
+
+**R²: 0.9885**
+
+R-squared measures the proportion of variance in the target variable explained by the model.
+
+### Formula
+
+```
+R² = 1 - (SS_res / SS_tot)
+```
+
+Where:
+- SS_res: Sum of squared residuals
+- SS_tot: Total sum of squares
+
+### Interpretation
+
+- **Range**: 0 to 1 (higher is better)
+- **Result**: 0.9885 means the model explains 98.85% of the variance
+- **Excellent Fit**: Values above 0.95 indicate a very strong model
+- **Implication**: Only 1.15% of variance remains unexplained
+
+<Note>
+An R² of 0.9885 is exceptionally high, indicating that the four features (Session Length, Time on App, Time on Website, and Membership Length) are excellent predictors of yearly customer spending.
+</Note>
+
+## Model Coefficients
+
+The coefficients reveal how each feature impacts the prediction:
+
+```python
+# Extract model coefficients and intercept
+print("Coefficients:", lr_model.coef_)
+print("Intercept:", lr_model.intercept_)
+```
+
+### Results
+
+```python
+# Output:
+Coefficients: [25.83, 38.81, 0.28, 61.30]
+Intercept: -1048.82
+```
+
+### Coefficient Interpretation
+
+| Feature | Coefficient | Impact |
+|---------|-------------|--------|
+| **Avg. Session Length** | 25.83 | +$25.83 per additional minute |
+| **Time on App** | 38.81 | +$38.81 per additional minute |
+| **Time on Website** | 0.28 | +$0.28 per additional minute |
+| **Length of Membership** | 61.30 | +$61.30 per additional year |
+
+### Key Insights
+
+1. **Length of Membership** has the strongest impact ($61.30/year)
+2. **Time on App** is the second most important feature ($38.81/minute)
+3. **Time on Website** has minimal impact ($0.28/minute)
+4. **Avg. Session Length** has moderate impact ($25.83/minute)
+
+<Info>
+The large difference between Time on App ($38.81) and Time on Website ($0.28) suggests that the mobile app is significantly more effective at driving customer spending than the website.
+</Info>
+
+## Interpreting the Intercept
+
+**Intercept: -1048.82**
+
+The intercept represents the predicted yearly spending when all features equal zero.
+
+- **Theoretical Value**: Not practically meaningful (customers can't have zero engagement)
+- **Mathematical Role**: Adjusts the baseline of the prediction equation
+- **Don't Overthink**: Negative intercepts are common and don't indicate a problem
+
+## How to Interpret Metrics
+
+### Is This a Good Model?
+
+**Yes!** The model shows excellent performance:
+
+✅ **High R² (0.9885)**: Explains nearly 99% of variance
+✅ **Low MSE (80.90)**: Predictions are accurate within ~$9
+✅ **Meaningful Coefficients**: Features align with business intuition
+✅ **Interpretable**: Clear insights for decision-making
+
+### Business Implications
+
+<Steps>
+  <Step title="Mobile App Priority">
+    Time on App has 138x more impact than Time on Website ($38.81 vs $0.28), suggesting the company should prioritize mobile app improvements.
+  </Step>
+  
+  <Step title="Customer Retention">
+    Length of Membership has the highest coefficient ($61.30), indicating that customer loyalty programs and retention strategies are crucial.
+  </Step>
+  
+  <Step title="Website Enhancement">
+    The low website coefficient suggests potential for improvement - making the website more engaging could increase its contribution to spending.
+  </Step>
+</Steps>
+
+## Complete Evaluation Code
+
+Here's the full code for model evaluation:
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Make predictions
+y_pred = lr_model.predict(X_test)
+
+# Calculate metrics
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Display results
+print("Mean Squared Error:", mse)
+print("R-squared:", r2)
+print("Coefficients:", lr_model.coef_)
+print("Intercept:", lr_model.intercept_)
+```
+
+## Summary
+
+The linear regression model demonstrates excellent predictive performance:
+
+- **Accuracy**: RMSE of ~$9 on yearly spending predictions
+- **Explanatory Power**: Explains 98.85% of variance in customer spending
+- **Actionable Insights**: Clear guidance on resource allocation (prioritize app over website)
+- **Customer Focus**: Strong emphasis on membership length highlights importance of retention
+
+This model provides a solid foundation for business decision-making regarding mobile app vs. website investment strategies.

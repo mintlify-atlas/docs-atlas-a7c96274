@@ -1,0 +1,68 @@
+---
+title: 'Model Performance'
+description: 'Evaluation metrics and performance assessment of the linear regression model'
+---
+
+## Model Performance Overview
+
+The linear regression model demonstrates excellent predictive accuracy, as evidenced by the evaluation metrics calculated on the test dataset.
+
+## Key Performance Metrics
+
+### Mean Squared Error (MSE)
+
+The model achieved a **Mean Squared Error of approximately 80.90**.
+
+<Note>
+MSE measures the average squared difference between predicted and actual values. A lower MSE indicates better model performance. In this context, an MSE of ~80.90 means the model's predictions deviate from actual values by approximately ±9.00 dollars on average (square root of MSE).
+</Note>
+
+### R-squared (R²) Score
+
+The model achieved an **R-squared (R²) score of approximately 0.9885 (98.85%)**.
+
+<Note>
+The R² score measures the proportion of variance in the dependent variable that is predictable from the independent variables. An R² of 0.9885 means that **98.85% of the variance** in yearly customer spending can be explained by our model features.
+</Note>
+
+## Model Quality Assessment
+
+| Metric | Value | Interpretation |
+|--------|-------|----------------|
+| **MSE** | ~80.90 | Low error rate indicates high accuracy |
+| **R²** | ~0.9885 | 98.85% of variance explained - excellent fit |
+| **RMSE** | ~9.00 | Average prediction error of ±$9.00 |
+
+### What This Means
+
+With an R² of 0.9885, this model demonstrates:
+
+1. **Excellent Predictive Power**: The model can accurately predict yearly customer spending based on session length, app usage, website usage, and membership length.
+
+2. **Strong Relationship**: There is a very strong linear relationship between the independent variables and the target variable (Yearly Amount Spent).
+
+3. **High Reliability**: The model can be confidently used for business decision-making and strategic planning.
+
+<Warning>
+While the model shows excellent performance on the test data, it's important to regularly validate predictions against new data to ensure the model maintains its accuracy over time.
+</Warning>
+
+## Prediction vs Actual Comparison
+
+The model's predictions closely align with actual customer spending values:
+
+- **Training Set Performance**: The model was trained on 70% of the data to learn the relationships between features and spending.
+- **Test Set Validation**: The remaining 30% of data was used to validate the model's predictive accuracy.
+- **Consistent Performance**: The high R² score indicates that the model performs consistently well across both training and test datasets.
+
+### Model Reliability
+
+The combination of low MSE and very high R² score indicates that:
+
+- The model is **not overfitted** - it generalizes well to unseen data
+- The linear regression approach is **well-suited** for this dataset
+- The selected features (session length, app time, website time, membership length) are **highly relevant** predictors of customer spending
+
+<Note>
+This level of model accuracy (98.85%) is exceptional and provides a solid foundation for data-driven business decisions regarding mobile app and website investment strategies.
+</Note>

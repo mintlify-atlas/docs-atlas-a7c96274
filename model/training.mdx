@@ -1,0 +1,151 @@
+---
+title: Model Training
+description: How the linear regression model is trained on ecommerce customer data
+---
+
+## Training Overview
+
+The model training process involves preparing the data, splitting it into training and test sets, initializing the linear regression model, and fitting it to the training data.
+
+## Data Preparation
+
+Before training, we prepare our features and target variable from the dataset.
+
+### Feature Selection
+
+Four numerical features are selected for the model:
+
+```python
+cols = ['Avg. Session Length', 'Time on App', 'Time on Website', 'Length of Membership']
+```
+
+### Splitting Features and Target
+
+```python
+# Independent variables (features)
+X = df[cols]
+
+# Dependent variable (target)
+y = df['Yearly Amount Spent']
+```
+
+## Train-Test Split
+
+The data is split into training and testing sets using a 70-30 ratio. This allows us to train the model on 70% of the data and evaluate its performance on the remaining 30%.
+
+```python
+from sklearn.model_selection import train_test_split
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+```
+
+### Split Parameters
+
+- **test_size=0.3**: Allocates 30% of data for testing (150 samples)
+- **random_state=1**: Ensures reproducible splits across runs
+- **Result**: 350 training samples, 150 testing samples (from 500 total)
+
+<Info>
+Setting `random_state` ensures that you get the same train-test split every time you run the code, making results reproducible.
+</Info>
+
+## Model Training Workflow
+
+<Steps>
+  <Step title="Initialize the Model">
+    Create an instance of the LinearRegression class
+    
+    ```python
+    from sklearn.linear_model import LinearRegression
+    
+    lr_model = LinearRegression()
+    ```
+    
+    This creates an untrained linear regression model with default parameters.
+  </Step>
+  
+  <Step title="Fit the Model">
+    Train the model using the training data
+    
+    ```python
+    lr_model.fit(X_train, y_train)
+    ```
+    
+    During this step, the model:
+    - Calculates optimal coefficients using Ordinary Least Squares
+    - Minimizes the sum of squared residuals
+    - Learns the relationship between features and target
+  </Step>
+  
+  <Step title="Model Parameters Learned">
+    After training, the model has learned:
+    - **Coefficients** (`lr_model.coef_`): Weights for each feature
+    - **Intercept** (`lr_model.intercept_`): The baseline prediction value
+    
+    These parameters define the linear equation used for predictions.
+  </Step>
+</Steps>
+
+## Training Data Specifications
+
+### Dataset Statistics
+
+- **Total samples**: 500 customers
+- **Training samples**: 350 customers (70%)
+- **Testing samples**: 150 customers (30%)
+- **Features**: 4 numerical variables
+- **Target**: 1 continuous variable (Yearly Amount Spent)
+
+### Feature Ranges
+
+Based on the complete dataset:
+
+| Feature | Min | Max | Mean |
+|---------|-----|-----|------|
+| Avg. Session Length | 29.53 min | 36.14 min | 33.05 min |
+| Time on App | 8.51 min | 15.13 min | 12.05 min |
+| Time on Website | 33.91 min | 40.01 min | 37.06 min |
+| Length of Membership | 0.27 years | 6.92 years | 3.53 years |
+| Yearly Amount Spent | $256.67 | $765.52 | $499.31 |
+
+## The fit() Method
+
+The `fit()` method is where the actual training happens:
+
+```python
+lr_model.fit(X_train, y_train)
+```
+
+### What Happens Inside?
+
+1. **Matrix Operations**: Converts data to matrix form
+2. **Normal Equation**: Solves β = (X^T X)^(-1) X^T y
+3. **Coefficient Calculation**: Computes optimal coefficients
+4. **Model Storage**: Stores learned parameters in the model object
+
+<Note>
+The `fit()` method modifies the model object in-place, storing the learned coefficients and intercept that will be used for future predictions.
+</Note>
+
+## Training Validation
+
+After training, you can verify the model has learned parameters:
+
+```python
+# Check if model is fitted
+print("Model fitted:", hasattr(lr_model, 'coef_'))
+
+# View number of features used
+print("Number of features:", len(lr_model.coef_))
+```
+
+## Next Steps
+
+Once the model is trained, you can:
+- Make predictions on new data
+- Evaluate model performance
+- Examine coefficients to understand feature importance
+- Use the model for business insights
+
+See the [Model Evaluation](/model/evaluation) page for details on assessing model performance.

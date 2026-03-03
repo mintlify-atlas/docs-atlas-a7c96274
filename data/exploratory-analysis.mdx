@@ -1,0 +1,137 @@
+---
+title: 'Exploratory Data Analysis'
+description: 'Statistical analysis and visualization of customer behavior patterns'
+---
+
+## Data Profiling with YData
+
+Comprehensive exploratory data analysis was performed using the `ydata_profiling` library (formerly pandas-profiling), which generates an automated profiling report:
+
+```python
+from ydata_profiling import ProfileReport
+
+# Generate comprehensive data profiling report
+profile = ProfileReport(df, explorative=True)
+profile
+```
+
+<Info>
+The ProfileReport provides automated analysis including:
+- Variable distributions and statistics
+- Correlation matrices
+- Missing value analysis
+- Duplicate detection
+- Data quality warnings
+</Info>
+
+## Distribution Analysis
+
+The dataset exhibits well-balanced distributions across all numeric features:
+
+### Summary Statistics
+
+| Feature | Count | Mean | Std | Min | 25% | 50% | 75% | Max |
+|---------|-------|------|-----|-----|-----|-----|-----|-----|
+| Avg. Session Length | 500 | 33.05 | 0.99 | 29.53 | 32.34 | 33.08 | 33.71 | 36.14 |
+| Time on App | 500 | 12.05 | 0.99 | 8.51 | 11.39 | 11.98 | 12.75 | 15.13 |
+| Time on Website | 500 | 37.06 | 1.01 | 33.91 | 36.35 | 37.07 | 37.72 | 40.01 |
+| Length of Membership | 500 | 3.53 | 1.00 | 0.27 | 2.93 | 3.53 | 4.13 | 6.92 |
+| Yearly Amount Spent | 500 | 499.31 | 79.31 | 256.67 | 445.04 | 498.89 | 549.31 | 765.52 |
+
+### Distribution Characteristics
+
+<Note>
+**Key Observation:** All features show relatively normal distributions with symmetric quartile spreads, which is ideal for linear regression modeling.
+</Note>
+
+1. **Avg. Session Length**
+   - Tight distribution around 33 minutes
+   - Low variability (SD: 0.99)
+   - Minimal outliers
+
+2. **Time on App**
+   - Moderate engagement averaging 12 minutes
+   - Consistent behavior across customers
+   - Range indicates varying usage patterns
+
+3. **Time on Website**
+   - Highest mean engagement time (37 minutes)
+   - Slightly higher variability than app usage
+   - Suggests website browsing behavior differs from app
+
+4. **Length of Membership**
+   - Good spread from new to long-term customers
+   - Mean of 3.5 years indicates established customer base
+   - Important predictor for customer lifetime value
+
+5. **Yearly Amount Spent**
+   - Wide range from $256.67 to $765.52
+   - Good variance for regression analysis
+   - No extreme outliers that would skew the model
+
+## Correlation Insights
+
+The exploratory analysis reveals important relationships between features:
+
+### Expected Correlations
+
+<CardGroup cols={2}>
+  <Card title="Positive Correlations" icon="arrow-trend-up">
+    Features that increase together:
+    - Length of Membership ↔ Yearly Amount Spent
+    - Time on App ↔ Yearly Amount Spent
+    - Avg. Session Length ↔ Yearly Amount Spent
+  </Card>
+  
+  <Card title="Weak Correlations" icon="arrows-left-right">
+    Features with minimal linear relationship:
+    - Time on Website shows weaker correlation with spending
+    - Suggests website engagement alone doesn't drive purchases
+  </Card>
+</CardGroup>
+
+<Warning>
+**Important Finding:** The correlation analysis hints that mobile app engagement may be more strongly associated with customer spending than website usage - a key insight for the business decision.
+</Warning>
+
+## Visualization Analysis
+
+The ProfileReport includes automated visualizations:
+
+### Histogram Distributions
+- All numeric features display approximately normal distributions
+- No significant skewness detected
+- Confirms suitability for linear regression assumptions
+
+### Missing Value Analysis
+- **Result:** Zero missing values across all 500 records
+- Complete dataset enables full utilization of all customer records
+- No imputation or data cleaning required
+
+### Duplicate Analysis
+- Each customer record is unique (identified by email)
+- No duplicate entries found
+- Data integrity confirmed
+
+## Key EDA Findings
+
+1. **Data Quality:** Excellent - complete dataset with no missing values or duplicates
+
+2. **Feature Suitability:** All numeric features show appropriate distributions for linear regression
+
+3. **Sample Size:** 500 customers provide sufficient data for reliable model training
+
+4. **Variable Relationships:** Clear positive relationships exist between engagement metrics and spending
+
+5. **Business Insight Preview:** Mobile app engagement appears more influential than website usage for driving customer spending
+
+<Info>
+These exploratory findings validate the dataset's readiness for linear regression modeling and suggest that the model will likely find significant relationships between customer engagement and annual spending.
+</Info>
+
+## Next Steps
+
+With the exploratory analysis complete, the data is confirmed suitable for:
+- Linear regression model training
+- Predictive analysis of customer spending
+- Business decision-making regarding app vs. website investment

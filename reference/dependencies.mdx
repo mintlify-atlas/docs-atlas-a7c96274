@@ -1,0 +1,202 @@
+---
+title: Dependencies
+description: Required Python libraries and installation instructions for the ecommerce linear regression analysis project
+---
+
+## Overview
+
+This page documents all required dependencies for running the ecommerce linear regression analysis. The project uses Python data science libraries for data manipulation, exploratory data analysis, visualization, and machine learning.
+
+## Python Version
+
+This project requires **Python 3.7 or higher**.
+
+## Required Libraries
+
+### Core Data Science Libraries
+
+<CodeGroup>
+
+```python Data Manipulation
+import pandas as pd
+```
+
+```python Visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+```python Machine Learning
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+```
+
+```python Profiling
+from ydata_profiling import ProfileReport
+```
+
+</CodeGroup>
+
+### Library Details
+
+#### pandas
+- **Purpose**: Data manipulation and analysis
+- **Usage**: Loading the ecommerce customers CSV file, data exploration, and preprocessing
+- **Version**: Latest stable version recommended
+
+#### ydata_profiling
+- **Purpose**: Automated exploratory data analysis
+- **Usage**: Generating comprehensive ProfileReport for the dataset
+- **Key Feature**: Creates detailed statistical summaries and visualizations
+- **Note**: Previously known as `pandas-profiling`
+
+#### matplotlib.pyplot
+- **Purpose**: Data visualization and plotting
+- **Usage**: Creating custom visualizations for the analysis
+- **Version**: Compatible with seaborn
+
+#### seaborn
+- **Purpose**: Statistical data visualization
+- **Usage**: Enhanced visualizations built on matplotlib
+- **Features**: Better default aesthetics and statistical plotting capabilities
+
+#### scikit-learn
+- **Purpose**: Machine learning library
+- **Components Used**:
+  - `LinearRegression`: Building the regression model
+  - `train_test_split`: Splitting data into training and testing sets
+  - `mean_squared_error`: Evaluating model performance
+  - `r2_score`: Calculating R-squared metric
+
+## Installation
+
+### Using pip
+
+<CodeGroup>
+
+```bash Install All at Once
+pip install pandas ydata-profiling matplotlib seaborn scikit-learn
+```
+
+```bash Install Individually
+pip install pandas
+pip install ydata-profiling
+pip install matplotlib
+pip install seaborn
+pip install scikit-learn
+```
+
+```bash Using requirements.txt
+# Create a requirements.txt file with:
+# pandas
+# ydata-profiling
+# matplotlib
+# seaborn
+# scikit-learn
+
+pip install -r requirements.txt
+```
+
+</CodeGroup>
+
+### Using conda
+
+```bash
+conda install pandas matplotlib seaborn scikit-learn
+pip install ydata-profiling
+```
+
+<Note>
+The `ydata-profiling` package is best installed via pip even in conda environments.
+</Note>
+
+## Data File Requirements
+
+### Dataset Location
+
+The analysis expects the dataset at:
+```
+data/ecommerce_customers.csv
+```
+
+### Dataset Structure
+
+The CSV file should contain the following columns:
+
+| Column Name | Data Type | Description |
+|------------|-----------|-------------|
+| Email | String | Customer's email address |
+| Address | String | Customer's physical address |
+| Avatar | String | Customer's avatar color |
+| Avg. Session Length | Float | Average session length in minutes |
+| Time on App | Float | Time spent on mobile app in minutes |
+| Time on Website | Float | Time spent on website in minutes |
+| Length of Membership | Float | Membership duration in years |
+| Yearly Amount Spent | Float | Annual spending by customer |
+
+### Dataset Source
+
+The dataset is available from Kaggle:
+- **URL**: https://www.kaggle.com/datasets/leilaaliha/ecommerce-customers/data
+- **Records**: 500 customers
+- **Format**: CSV (Comma-Separated Values)
+
+## Verification
+
+After installing the dependencies, verify the installation by running:
+
+```python
+import pandas as pd
+from ydata_profiling import ProfileReport
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+print("All dependencies successfully imported!")
+print(f"Pandas version: {pd.__version__}")
+print(f"Scikit-learn version: {sklearn.__version__}")
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+
+<Accordion title="Import errors with ydata_profiling">
+If you encounter import errors, ensure you're using the correct package name:
+- Old name: `pandas-profiling`
+- New name: `ydata-profiling`
+
+Update your installation:
+```bash
+pip uninstall pandas-profiling
+pip install ydata-profiling
+```
+</Accordion>
+
+<Accordion title="Matplotlib display issues in Jupyter">
+If plots don't display in Jupyter notebooks, add this magic command at the top of your notebook:
+```python
+%matplotlib inline
+```
+</Accordion>
+
+<Accordion title="Version compatibility issues">
+If you experience compatibility issues between libraries, try creating a fresh virtual environment:
+```bash
+python -m venv ecommerce_env
+source ecommerce_env/bin/activate  # On Windows: ecommerce_env\Scripts\activate
+pip install pandas ydata-profiling matplotlib seaborn scikit-learn
+```
+</Accordion>
+
+</AccordionGroup>
+
+## Next Steps
+
+Once all dependencies are installed and verified:
+1. Download the dataset from Kaggle
+2. Place it in the `data/` directory
+3. Proceed to the [Code Walkthrough](/reference/code-walkthrough) to understand the analysis implementation

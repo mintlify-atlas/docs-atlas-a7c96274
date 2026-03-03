@@ -1,0 +1,115 @@
+---
+title: 'Ecommerce Linear Regression Analysis'
+description: 'Predict customer spending patterns and optimize business strategy using machine learning'
+---
+
+# Ecommerce Linear Regression Analysis
+
+A data-driven approach to help clothing retailers make strategic decisions about mobile app vs. website development based on customer spending behavior.
+
+## Overview
+
+This project applies linear regression analysis to real ecommerce customer data from a clothing store company. By analyzing customer behavior metrics, the model predicts yearly spending and reveals which platform (mobile app or website) drives more revenue.
+
+<CardGroup cols={2}>
+  <Card title="98.85% Model Accuracy" icon="chart-line">
+    Exceptional R² score demonstrates highly reliable predictions of customer spending patterns
+  </Card>
+  <Card title="Mobile App Impact" icon="mobile">
+    Time on app shows 138x stronger correlation with spending than website time
+  </Card>
+  <Card title="500 Customer Dataset" icon="users">
+    Comprehensive analysis of customer behavior including session length, platform usage, and membership duration
+  </Card>
+  <Card title="Data-Driven Strategy" icon="lightbulb">
+    Clear recommendations for resource allocation between mobile and web development
+  </Card>
+</CardGroup>
+
+## Key Insights
+
+Our analysis of ecommerce customer data revealed several critical insights:
+
+### Model Performance
+- **R² Score: 0.9885** - The model explains 98.85% of the variance in yearly spending
+- **Mean Squared Error: 80.90** - Excellent prediction accuracy
+- **Linear relationship** - Strong linear correlation between features and target variable
+
+### Business Impact
+
+The regression coefficients reveal the relative impact of each factor on customer spending:
+
+| Feature | Coefficient | Impact |
+|---------|-------------|--------|
+| Length of Membership | ~61.30 | Strongest predictor - customer loyalty drives revenue |
+| Time on App | ~38.81 | Second strongest - mobile engagement matters |
+| Avg. Session Length | ~25.83 | Quality of engagement impacts spending |
+| Time on Website | ~0.28 | Minimal impact compared to app |
+
+<Note>
+The mobile app coefficient (38.81) is approximately **138 times larger** than the website coefficient (0.28), indicating that time spent on the mobile app has a significantly greater impact on yearly customer spending.
+</Note>
+
+## Strategic Recommendations
+
+Based on the analysis:
+
+1. **Prioritize Mobile App Development** - Customer engagement with the mobile app has a dramatically larger impact on spending than the website
+
+2. **Invest in Customer Retention** - Length of membership shows the strongest correlation, highlighting the importance of loyalty programs
+
+3. **Enhance Website Experience** - While the current website impact is low, improving it could unlock additional revenue potential
+
+4. **Focus on Engagement Quality** - Average session length matters, suggesting that personalized experiences drive results
+
+## Dataset Overview
+
+The analysis uses data from 500 customers with the following attributes:
+
+- **Email & Address** - Customer identification
+- **Avg. Session Length** - Duration of in-store style and clothing advice sessions (minutes)
+- **Time on App** - Time spent on the mobile application (minutes)
+- **Time on Website** - Time spent on the website (minutes)
+- **Length of Membership** - Customer membership duration (years)
+- **Yearly Amount Spent** - Annual spending (target variable)
+
+Dataset source: [Kaggle - Ecommerce Customers](https://www.kaggle.com/datasets/leilaaliha/ecommerce-customers/data)
+
+## Methodology
+
+The project follows a systematic machine learning workflow:
+
+<Steps>
+  <Step title="Data Loading & Exploration">
+    Load the customer dataset and perform exploratory data analysis to understand distributions and relationships
+  </Step>
+  <Step title="Data Preparation">
+    Select relevant features (session length, app time, website time, membership length) and prepare for modeling
+  </Step>
+  <Step title="Train-Test Split">
+    Divide data into 70% training and 30% testing sets to ensure unbiased evaluation
+  </Step>
+  <Step title="Model Training">
+    Train a linear regression model using scikit-learn on the prepared features
+  </Step>
+  <Step title="Evaluation & Interpretation">
+    Assess model performance and analyze coefficients to derive business insights
+  </Step>
+</Steps>
+
+## Next Steps
+
+Ready to run the analysis yourself? Check out the [Quickstart Guide](/quickstart) for step-by-step instructions on setting up the environment and executing the analysis.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get started with the analysis in minutes
+  </Card>
+  <Card title="View on GitHub" icon="github" href="https://carolinajimenez.github.io">
+    Explore the complete project repository
+  </Card>
+</CardGroup>
+
+---
+
+**Author:** Carolina Jiménez M | [Portfolio](https://carolinajimenez.github.io)

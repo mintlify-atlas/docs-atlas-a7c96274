@@ -1,0 +1,96 @@
+---
+title: 'Dataset Overview'
+description: 'Understanding the ecommerce customer dataset structure and characteristics'
+---
+
+## Dataset Description
+
+This analysis uses an ecommerce customer dataset from a **clothing store company** that offers both online shopping and in-store style and clothing advice sessions. The dataset was sourced from [Kaggle](https://www.kaggle.com/datasets/leilaaliha/ecommerce-customers/data) and contains behavioral data for 500 customers.
+
+The primary objective is to help the company decide whether to concentrate resources on their mobile app service or website, based on the yearly amount spent by customers.
+
+## Dataset Columns
+
+<ParamField path="Email" type="string">
+  Customer's email address (unique identifier)
+</ParamField>
+
+<ParamField path="Address" type="string">
+  Customer's physical address
+</ParamField>
+
+<ParamField path="Avatar" type="string">
+  Customer's avatar color preference
+</ParamField>
+
+<ParamField path="Avg. Session Length" type="numeric">
+  Average session length in minutes when visiting the store
+  
+  **Statistics:**
+  - Mean: 33.05 minutes
+  - Range: 29.53 - 36.14 minutes
+  - Std Dev: 0.99
+</ParamField>
+
+<ParamField path="Time on App" type="numeric">
+  Time spent on the mobile app in minutes
+  
+  **Statistics:**
+  - Mean: 12.05 minutes
+  - Range: 8.51 - 15.13 minutes
+  - Std Dev: 0.99
+</ParamField>
+
+<ParamField path="Time on Website" type="numeric">
+  Time spent on the website in minutes
+  
+  **Statistics:**
+  - Mean: 37.06 minutes
+  - Range: 33.91 - 40.01 minutes
+  - Std Dev: 1.01
+</ParamField>
+
+<ParamField path="Length of Membership" type="numeric">
+  How long the customer has been a member in years
+  
+  **Statistics:**
+  - Mean: 3.53 years
+  - Range: 0.27 - 6.92 years
+  - Std Dev: 1.00
+</ParamField>
+
+<ParamField path="Yearly Amount Spent" type="numeric">
+  The annual amount spent by the customer (target variable)
+  
+  **Statistics:**
+  - Mean: $499.31
+  - Range: $256.67 - $765.52
+  - Std Dev: $79.31
+</ParamField>
+
+## Dataset Statistics
+
+<Info>
+The dataset contains **500 customer records** with complete data across all 8 columns. There are no missing values in the dataset.
+</Info>
+
+### Key Insights
+
+- **Sample Size:** 500 customers
+- **Data Quality:** Complete dataset with no missing values
+- **Feature Distribution:** All numeric features show relatively normal distributions with consistent standard deviations around 1.0
+- **Target Variable:** Yearly Amount Spent shows good variance (SD: $79.31) suitable for regression analysis
+
+## Data Distribution Characteristics
+
+Based on the descriptive statistics:
+
+1. **Avg. Session Length** shows moderate variation with most customers having sessions between 32-34 minutes
+2. **Time on App** averages around 12 minutes with a relatively tight distribution
+3. **Time on Website** has the highest mean value (37 minutes) among engagement metrics
+4. **Length of Membership** spans from new customers (< 1 year) to long-term members (nearly 7 years)
+5. **Yearly Amount Spent** ranges from $256.67 to $765.52, providing a good spread for predictive modeling
+
+<Note>
+The quartile values indicate relatively symmetric distributions for most features, which is ideal for linear regression modeling.
+</Note>

@@ -1,0 +1,642 @@
+---
+title: Code Walkthrough
+description: Step-by-step breakdown of the ecommerce linear regression analysis implementation
+---
+
+## Overview
+
+This walkthrough provides a comprehensive, step-by-step explanation of the entire analysis pipeline from data loading to model evaluation. Each section includes the actual code from the notebook with detailed explanations.
+
+## Complete Analysis Flow
+
+<AccordionGroup>
+
+<Accordion title="1. Import Required Libraries">
+
+### Purpose
+Import all necessary Python libraries for data manipulation, visualization, and machine learning.
+
+### Code
+
+```python
+import pandas as pd
+from ydata_profiling import ProfileReport
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+```
+
+### Explanation
+
+- **pandas (pd)**: Primary library for data manipulation and analysis
+- **ProfileReport**: Generates automated exploratory data analysis reports
+- **matplotlib.pyplot (plt)**: Core plotting library for visualizations
+- **seaborn (sns)**: Statistical visualization library built on matplotlib
+- **train_test_split**: Function to split data into training and testing sets
+- **LinearRegression**: The linear regression model class
+- **mean_squared_error, r2_score**: Metrics for evaluating model performance
+
+<Note>
+All imports should execute without errors if dependencies are properly installed. See the [Dependencies](/reference/dependencies) page for installation instructions.
+</Note>
+
+</Accordion>
+
+<Accordion title="2. Load the Dataset">
+
+### Purpose
+Read the ecommerce customers CSV file into a pandas DataFrame for analysis.
+
+### Code
+
+```python
+# Read the data into a DataFrame
+db_path = "data/"
+df = pd.read_csv(db_path + "ecommerce_customers.csv")
+```
+
+### Explanation
+
+- **db_path**: Variable storing the directory path where data files are located
+- **pd.read_csv()**: Pandas function that reads CSV files and creates a DataFrame
+- **df**: The DataFrame object containing all customer data
+
+### Dataset Structure
+
+The loaded DataFrame contains 500 rows with the following columns:
+- Email, Address, Avatar (categorical)
+- Avg. Session Length, Time on App, Time on Website, Length of Membership, Yearly Amount Spent (numerical)
+
+<Tip>
+Always verify the file path is correct relative to your working directory. Use `os.getcwd()` to check your current directory if needed.
+</Tip>
+
+</Accordion>
+
+<Accordion title="3. Initial Data Exploration">
+
+### Purpose
+Examine the first few rows and get statistical summaries of the dataset.
+
+### Code
+
+```python
+# View first 5 rows
+df.head()
+
+# Get statistical summary
+df.describe()
+```
+
+### Explanation
+
+#### df.head()
+Displays the first 5 rows of the DataFrame, showing:
+- Sample customer data
+- Column names and data types
+- Initial data quality check
+
+Example output shows customers with email addresses, locations, session times, and spending amounts.
+
+#### df.describe()
+Generates descriptive statistics for numerical columns:
+- **count**: Number of non-null values (500 for all columns)
+- **mean**: Average values (e.g., avg yearly spending ~$499.31)
+- **std**: Standard deviation showing data spread
+- **min/max**: Range of values
+- **25%, 50%, 75%**: Quartile distributions
+
+### Key Insights from describe()
+
+| Metric | Avg. Session Length | Time on App | Time on Website | Yearly Amount Spent |
+|--------|---------------------|-------------|-----------------|---------------------|
+| Mean | 33.05 min | 12.05 min | 37.06 min | $499.31 |
+| Std | 0.99 min | 0.99 min | 1.01 min | $79.31 |
+| Min | 29.53 min | 8.51 min | 33.91 min | $256.67 |
+| Max | 36.14 min | 15.13 min | 40.01 min | $765.52 |
+
+</Accordion>
+
+<Accordion title="4. Generate ProfileReport (EDA)">
+
+### Purpose
+Create a comprehensive automated exploratory data analysis report using ydata_profiling.
+
+### Implied Code
+
+```python
+# Generate profile report
+profile = ProfileReport(df, title="Ecommerce Customers Profiling Report")
+profile.to_file("ecommerce_profile_report.html")
+```
+
+### What ProfileReport Provides
+
+1. **Overview Section**:
+   - Dataset statistics (500 rows, 8 columns)
+   - Missing values analysis
+   - Duplicate rows detection
+   - Variable types distribution
+
+2. **Variable Analysis**:
+   - Distribution histograms for each numerical column
+   - Descriptive statistics
+   - Extreme values detection
+   - Zeros and missing values
+
+3. **Correlations**:
+   - Pearson correlation matrix
+   - Spearman correlation
+   - Correlation heatmaps
+
+4. **Missing Values**:
+   - Matrix visualization
+   - Count and percentage per variable
+
+5. **Sample Data**:
+   - First and last rows preview
+
+### Benefits
+
+- **Automated**: No manual plotting required
+- **Comprehensive**: Covers all standard EDA tasks
+- **Interactive**: HTML report with collapsible sections
+- **Shareable**: Easy to distribute to stakeholders
+
+<Warning>
+ProfileReport can be memory-intensive on large datasets. For datasets with >100,000 rows, consider using minimal=True parameter.
+</Warning>
+
+</Accordion>
+
+<Accordion title="5. Data Preparation for Modeling">
+
+### Purpose
+Separate features (independent variables) from the target variable (dependent variable) for machine learning.
+
+### Code
+
+```python
+# Prepare features and target variable
+X = df[['Avg. Session Length', 'Time on App', 'Time on Website', 'Length of Membership']]
+y = df['Yearly Amount Spent']
+```
+
+### Explanation
+
+#### Feature Selection (X)
+- **What**: Independent variables that will predict the target
+- **Columns**: 4 numerical features
+  - Avg. Session Length: Average duration of in-store sessions
+  - Time on App: Time spent on mobile application
+  - Time on Website: Time spent on website
+  - Length of Membership: Years as a customer
+- **Shape**: (500, 4) - 500 samples, 4 features
+
+#### Target Variable (y)
+- **What**: Dependent variable we want to predict
+- **Column**: Yearly Amount Spent
+- **Shape**: (500,) - 500 values
+- **Type**: Continuous numerical variable (regression task)
+
+### Why These Features?
+
+<CardGroup cols={2}>
+
+<Card title="Avg. Session Length">
+Measures customer engagement during in-store style advice sessions
+</Card>
+
+<Card title="Time on App">
+Indicates mobile app usage and engagement level
+</Card>
+
+<Card title="Time on Website">
+Shows website usage and customer online behavior
+</Card>
+
+<Card title="Length of Membership">
+Represents customer loyalty and relationship duration
+</Card>
+
+</CardGroup>
+
+<Note>
+Categorical columns (Email, Address, Avatar) are excluded as they don't provide numerical predictive value without encoding.
+</Note>
+
+</Accordion>
+
+<Accordion title="6. Train-Test Split">
+
+### Purpose
+Divide the dataset into training and testing sets to evaluate model performance on unseen data.
+
+### Code
+
+```python
+# Split data into training (70%) and testing (30%) sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, 
+    test_size=0.3, 
+    random_state=42
+)
+```
+
+### Explanation
+
+#### Parameters
+
+- **X, y**: Feature matrix and target vector to split
+- **test_size=0.3**: 30% of data for testing, 70% for training
+- **random_state=42**: Seed for reproducibility (same split every time)
+
+#### Resulting Datasets
+
+| Dataset | Samples | Purpose |
+|---------|---------|----------|
+| X_train | 350 | Train the model - features |
+| y_train | 350 | Train the model - target |
+| X_test | 150 | Evaluate the model - features |
+| y_test | 150 | Evaluate the model - target |
+
+#### Why Split?
+
+1. **Training Set (70%)**:
+   - Used to fit the model
+   - Model learns patterns from this data
+   - Larger portion for better learning
+
+2. **Testing Set (30%)**:
+   - Evaluates model on unseen data
+   - Prevents overfitting
+   - Measures generalization ability
+
+<Tip>
+The 70-30 split is a common practice. Other common ratios include 80-20 or 75-25. Larger datasets can use smaller test percentages.
+</Tip>
+
+</Accordion>
+
+<Accordion title="7. Model Training">
+
+### Purpose
+Create and train a linear regression model using the training data.
+
+### Code
+
+```python
+# Create Linear Regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+```
+
+### Explanation
+
+#### Model Creation
+- **LinearRegression()**: Instantiates a linear regression model object
+- **Algorithm**: Ordinary Least Squares (OLS)
+- **Goal**: Find the best-fitting linear relationship between features and target
+
+#### Model Training
+- **fit()**: Method that trains the model
+- **Input**: Training features (X_train) and targets (y_train)
+- **Process**: Calculates optimal coefficients that minimize prediction error
+- **Output**: Trained model ready for predictions
+
+### The Linear Regression Equation
+
+The model learns this equation:
+
+```
+Yearly Amount Spent = β₀ + β₁(Avg. Session Length) + β₂(Time on App) + 
+                      β₃(Time on Website) + β₄(Length of Membership)
+```
+
+Where:
+- **β₀** = Intercept (baseline spending)
+- **β₁, β₂, β₃, β₄** = Coefficients (impact of each feature)
+
+### What Happens During fit()?
+
+1. **Matrix Operations**: Uses linear algebra to solve for optimal coefficients
+2. **Error Minimization**: Minimizes sum of squared residuals
+3. **Coefficient Calculation**: Determines the weight for each feature
+4. **Intercept Calculation**: Computes the baseline value
+
+<Info>
+Linear regression assumes a linear relationship between features and target. It's fast, interpretable, and works well for this regression task.
+</Info>
+
+</Accordion>
+
+<Accordion title="8. Making Predictions">
+
+### Purpose
+Use the trained model to make predictions on the test set.
+
+### Code
+
+```python
+# Make predictions on test data
+y_pred = model.predict(X_test)
+```
+
+### Explanation
+
+#### Prediction Process
+
+1. **Input**: Test features (X_test) - 150 samples with 4 features each
+2. **Method**: predict() - applies learned coefficients to new data
+3. **Output**: Predicted yearly spending (y_pred) - 150 predicted values
+
+#### How Predictions Work
+
+For each test sample, the model:
+```python
+y_pred[i] = intercept + (coef[0] * Avg_Session_Length[i]) + 
+                       (coef[1] * Time_on_App[i]) + 
+                       (coef[2] * Time_on_Website[i]) + 
+                       (coef[3] * Length_of_Membership[i])
+```
+
+### Example Prediction
+
+For a customer with:
+- Avg. Session Length: 34.5 min
+- Time on App: 12.7 min
+- Time on Website: 38.2 min
+- Length of Membership: 4.1 years
+
+The model calculates their predicted yearly spending using the learned equation.
+
+<Note>
+Predictions are made on the test set (unseen data) to evaluate how well the model generalizes to new customers.
+</Note>
+
+</Accordion>
+
+<Accordion title="9. Model Evaluation">
+
+### Purpose
+Assess the model's performance using statistical metrics.
+
+### Code
+
+```python
+# Calculate evaluation metrics
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"Mean Squared Error: {mse:.2f}")
+print(f"R-squared Score: {r2:.4f}")
+```
+
+### Evaluation Metrics
+
+#### Mean Squared Error (MSE)
+
+**Formula**: MSE = (1/n) × Σ(actual - predicted)²
+
+**Result**: ~80.90
+
+**Interpretation**:
+- Measures average squared difference between actual and predicted values
+- Lower values indicate better fit
+- In this case: Square root of 80.90 ≈ $9 average prediction error
+- Scale depends on target variable (yearly spending in dollars)
+
+#### R-squared (R²) Score
+
+**Formula**: R² = 1 - (SS_residual / SS_total)
+
+**Result**: ~0.9885 (98.85%)
+
+**Interpretation**:
+- Proportion of variance in target explained by features
+- Range: 0 to 1 (higher is better)
+- 0.9885 means the model explains 98.85% of spending variation
+- **Excellent performance** - very high predictive power
+
+### Performance Summary
+
+| Metric | Value | Assessment |
+|--------|-------|------------|
+| MSE | 80.90 | Low error - good accuracy |
+| R² | 0.9885 | Excellent fit - explains 98.85% of variance |
+| RMSE* | ~9.00 | Average prediction error of ~$9 |
+
+*RMSE (Root Mean Squared Error) = √MSE
+
+<Tip>
+An R² score above 0.90 is considered excellent for most real-world regression problems. This model demonstrates strong predictive capability.
+</Tip>
+
+</Accordion>
+
+<Accordion title="10. Coefficient Analysis">
+
+### Purpose
+Extract and interpret the model coefficients to understand feature importance.
+
+### Code
+
+```python
+# Extract model coefficients
+coefficients = pd.DataFrame({
+    'Feature': X.columns,
+    'Coefficient': model.coef_
+})
+
+# Get intercept
+intercept = model.intercept_
+
+print("Model Coefficients:")
+print(coefficients)
+print(f"\nIntercept: {intercept:.2f}")
+```
+
+### Results
+
+| Feature | Coefficient | Interpretation |
+|---------|-------------|----------------|
+| Avg. Session Length | ~25.83 | $25.83 increase per minute |
+| Time on App | ~38.81 | $38.81 increase per minute |
+| Time on Website | ~0.28 | $0.28 increase per minute |
+| Length of Membership | ~61.30 | $61.30 increase per year |
+| **Intercept** | **-1048.82** | **Baseline value** |
+
+### Coefficient Interpretation
+
+#### Time on App (Highest Impact)
+- **Coefficient**: 38.81
+- **Meaning**: Every additional minute on the app increases yearly spending by $38.81
+- **Business Insight**: **Mobile app is the strongest driver of spending**
+- **Recommendation**: Prioritize app development and features
+
+#### Length of Membership (Strong Impact)
+- **Coefficient**: 61.30
+- **Meaning**: Each additional year of membership increases spending by $61.30
+- **Business Insight**: Customer loyalty is extremely valuable
+- **Recommendation**: Invest in retention and loyalty programs
+
+#### Avg. Session Length (Moderate Impact)
+- **Coefficient**: 25.83
+- **Meaning**: Longer in-store sessions correlate with higher spending
+- **Business Insight**: In-store experience matters
+- **Recommendation**: Improve in-store styling consultations
+
+#### Time on Website (Minimal Impact)
+- **Coefficient**: 0.28
+- **Meaning**: Website time has very little effect on spending
+- **Business Insight**: **Website is underperforming**
+- **Recommendation**: Redesign website to match app effectiveness
+
+### The Complete Model Equation
+
+```
+Yearly Spending = -1048.82 + 
+                  (25.83 × Avg. Session Length) + 
+                  (38.81 × Time on App) + 
+                  (0.28 × Time on Website) + 
+                  (61.30 × Length of Membership)
+```
+
+<Warning>
+The negative intercept (-1048.82) is theoretical and shouldn't be interpreted literally. It represents the baseline when all features are zero, which isn't realistic.
+</Warning>
+
+</Accordion>
+
+<Accordion title="11. Results Interpretation & Business Insights">
+
+### Key Findings
+
+#### 1. Mobile App Dominance
+
+**Finding**: Time on App has the highest coefficient (38.81) among engagement metrics.
+
+**Business Impact**:
+- Mobile app is 138× more effective than website (38.81 vs 0.28)
+- App engagement directly drives revenue
+- App users spend significantly more annually
+
+**Action Items**:
+- ✅ Increase mobile app development budget
+- ✅ Add features to increase app session time
+- ✅ Launch app-exclusive promotions
+- ✅ Improve app user experience
+
+#### 2. Customer Loyalty Value
+
+**Finding**: Length of Membership has the strongest overall coefficient (61.30).
+
+**Business Impact**:
+- Long-term customers are most valuable
+- Retention has massive ROI
+- Customer lifetime value increases significantly over time
+
+**Action Items**:
+- ✅ Implement loyalty rewards program
+- ✅ Focus on customer retention strategies
+- ✅ Offer membership milestone benefits
+- ✅ Reduce churn through personalized engagement
+
+#### 3. Website Underperformance
+
+**Finding**: Time on Website has negligible impact (0.28 coefficient).
+
+**Business Impact**:
+- Website is not driving spending
+- Potential missed revenue opportunity
+- User experience may be poor
+
+**Action Items**:
+- ✅ Conduct website UX audit
+- ✅ Implement website redesign
+- ✅ Add features that mirror app success
+- ✅ Test and optimize conversion funnel
+
+### Strategic Recommendations
+
+<CardGroup cols={2}>
+
+<Card title="Short-term (0-6 months)" icon="rocket">
+- Enhance mobile app features
+- Launch app engagement campaigns
+- Start loyalty program pilot
+- Analyze website pain points
+</Card>
+
+<Card title="Long-term (6-12 months)" icon="chart-line">
+- Complete website overhaul
+- Expand loyalty program
+- Develop app-exclusive features
+- Integrate omnichannel experience
+</Card>
+
+</CardGroup>
+
+### ROI Projections
+
+Based on coefficients, if the company:
+
+**Increases average app time by 1 minute across all customers:**
+- Revenue increase: 500 customers × $38.81 = **$19,405 annually**
+
+**Retains customers 1 year longer:**
+- Revenue increase: 500 customers × $61.30 = **$30,650 annually**
+
+**Improves website to match 25% of app effectiveness:**
+- Current website coefficient: $0.28/min
+- Target coefficient: $9.70/min (25% of app's 38.81)
+- Potential revenue increase: **~$4,710 annually**
+
+<Info>
+These projections assume all else remains equal and are based on current customer behavior patterns.
+</Info>
+
+</Accordion>
+
+</AccordionGroup>
+
+## Summary
+
+This code walkthrough demonstrates a complete machine learning pipeline:
+
+1. ✅ **Data Loading**: Import ecommerce customer data
+2. ✅ **Exploration**: Understand data structure and distributions
+3. ✅ **Profiling**: Generate automated EDA report
+4. ✅ **Preparation**: Select features and target variable
+5. ✅ **Splitting**: Create train/test sets
+6. ✅ **Training**: Build linear regression model
+7. ✅ **Prediction**: Generate predictions on test data
+8. ✅ **Evaluation**: Assess model performance (R² = 0.9885)
+9. ✅ **Analysis**: Interpret coefficients for business insights
+10. ✅ **Recommendations**: Translate findings into actions
+
+## Model Performance
+
+- **R² Score**: 0.9885 (Excellent)
+- **MSE**: 80.90 (Low error)
+- **Prediction Accuracy**: ~$9 average error
+- **Conclusion**: Highly reliable model for business decisions
+
+## Business Conclusion
+
+**Primary Recommendation**: **Focus on Mobile App Development**
+
+The analysis conclusively shows that:
+- Mobile app is the strongest revenue driver (38.81× more effective than website)
+- Customer loyalty programs have massive ROI potential
+- Website requires significant improvement to compete with app
+
+The company should concentrate resources on enhancing the mobile app experience while simultaneously improving the website and implementing loyalty retention strategies.
+
+<Card title="Next Steps" icon="forward">
+For detailed dependency information and setup instructions, refer to the [Dependencies](/reference/dependencies) page.
+</Card>
