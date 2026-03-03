@@ -18,13 +18,12 @@ Before you begin, ensure you have the following installed:
 ### Required Python Packages
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn ydata-profiling
+pip install pandas matplotlib seaborn scikit-learn ydata-profiling
 ```
 
 | Package | Purpose |
 |---------|--------|
 | pandas | Data manipulation and analysis |
-| numpy | Numerical computations |
 | matplotlib | Data visualization |
 | seaborn | Statistical plotting |
 | scikit-learn | Machine learning algorithms |
@@ -43,7 +42,7 @@ pip install pandas numpy matplotlib seaborn scikit-learn ydata-profiling
   <Step title="Install Dependencies">
     Open your terminal and install the required packages:
     ```bash
-    pip install pandas numpy matplotlib seaborn scikit-learn ydata-profiling
+    pip install pandas matplotlib seaborn scikit-learn ydata-profiling
     ```
   </Step>
   
@@ -134,7 +133,7 @@ Divide the dataset into training (70%) and testing (30%) sets:
 
 ```python
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.30, random_state=42
+    X, y, test_size=0.3, random_state=1
 )
 ```
 
