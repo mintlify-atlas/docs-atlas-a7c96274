@@ -1,0 +1,71 @@
+{
+  "projectType": "ai-ml",
+  "projectName": "Ecommerce Linear Regression Analysis",
+  "projectDescription": "A data science project that uses linear regression to analyze ecommerce customer behavior and determine whether a clothing store should focus on mobile app or website development.",
+  "theme": "palm",
+  "primaryColor": "#6366F1",
+  "lightColor": "#818CF8",
+  "darkColor": "#4F46E5",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Data & Methodology",
+        "pages": [
+          "data/dataset-overview",
+          "data/data-preparation",
+          "data/exploratory-analysis"
+        ]
+      },
+      {
+        "group": "Model",
+        "pages": [
+          "model/linear-regression",
+          "model/training",
+          "model/evaluation"
+        ]
+      },
+      {
+        "group": "Results & Insights",
+        "pages": [
+          "results/model-performance",
+          "results/feature-importance",
+          "results/business-recommendations"
+        ]
+      },
+      {
+        "group": "Technical Reference",
+        "pages": [
+          "reference/dependencies",
+          "reference/code-walkthrough"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Linear regression analysis on ecommerce customer data",
+    "Comparative analysis of mobile app vs website engagement",
+    "Customer spending prediction model with 98.85% R² accuracy",
+    "Feature importance analysis for business decision-making",
+    "Data profiling and exploratory data analysis",
+    "70-30 train-test split validation"
+  ],
+  "publicApiSurface": [
+    "Data Loading: pd.read_csv() for ecommerce_customers.csv",
+    "Data Profiling: ProfileReport() for data exploration",
+    "Feature Engineering: Avg. Session Length, Time on App, Time on Website, Length of Membership",
+    "Target Variable: Yearly Amount Spent",
+    "Model: scikit-learn LinearRegression()",
+    "Train-Test Split: train_test_split() with 70-30 ratio",
+    "Model Training: lr_model.fit(X_train, y_train)",
+    "Predictions: lr_model.predict(X_test)",
+    "Evaluation Metrics: Mean Squared Error (MSE) and R-squared (R²)",
+    "Model Coefficients: lr_model.coef_ and lr_model.intercept_"
+  ]
+}
